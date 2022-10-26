@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-const LoginFooter = () => {
+const SignupFooter = () => {
 
     const navigation = useNavigation()
     const FONTSIZE = 14
@@ -10,13 +10,13 @@ const LoginFooter = () => {
     return <View style={styles.container}>
         <View style={{flexDirection: 'row'}}>
             <Text style={{color: '#888888', fontSize: FONTSIZE}}>
-                Joined us before?&nbsp;
+                New to Flurn?&nbsp;
             </Text>
             <TouchableOpacity
                 activeOpacity={0.65}
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate('Signup')}
             >
-                <Text style={{color: '#0195f7', fontSize: FONTSIZE}}>Login.</Text>
+                <Text style={{color: '#0195f7', fontSize: FONTSIZE}}>Register.</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LoginFooter ;
+export default SignupFooter ;

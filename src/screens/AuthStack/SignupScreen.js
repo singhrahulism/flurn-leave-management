@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Text, View, StyleSheet, StatusBar, Image, Platform, TouchableOpacity, TextInput } from 'react-native'
-import NameField from '../components/fields/NameField'
-import EmailField from '../components/fields/EmailField'
-import PasswordField from '../components/fields/PasswordField'
-import PrimaryButton from '../components/buttons/PrimaryButton'
-import LoginFooter from '../components/footers/loginFooter'
+import { Text, View, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native'
+import NameField from '../../components/fields/NameField'
+import EmailField from '../../components/fields/EmailField'
+import PasswordField from '../../components/fields/PasswordField'
+import PrimaryButton from '../../components/buttons/PrimaryButton'
+import LoginFooter from '../../components/footers/loginFooter'
 
 const SignupScreen = () => {
 
@@ -60,9 +60,9 @@ const SignupScreen = () => {
         }
     }
 
-    return <View style={styles.container}>
+    return <View style={styles.container} behavior="padding">
         <Image
-            source={require('../../assets/signupIllustration.png')}
+            source={require('../../../assets/signupIllustration.png')}
             style={styles.loginIllustrationContainer}
         />
         <Text style={{
