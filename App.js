@@ -1,7 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { AppStack, AuthStack } from "./stack"
+import { Provider } from "react-redux" 
+import store from "./src/redux/store"
 
-const isSignedIn = false
+const isSignedIn = true
 
 const App = () => {
 
@@ -14,6 +16,8 @@ const App = () => {
 
 export default () => {
     return (
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     )
 }
