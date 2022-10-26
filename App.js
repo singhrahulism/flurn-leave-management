@@ -1,18 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { AppStack, AuthStack } from "./stack"
 
-import HomeScreen from "./src/screens/HomeScreen"
-
-const Stack = createNativeStackNavigator()
+const isSignedIn = false
 
 const App = () => {
-  return (
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name='Home' component={HomeScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
-  )
+
+    return (
+    <NavigationContainer>
+      { isSignedIn ? <AppStack /> : <AuthStack /> }
+    </NavigationContainer>
+    )
 }
 
-export default App
+export default () => {
+    return (
+        <App />
+    )
+}
