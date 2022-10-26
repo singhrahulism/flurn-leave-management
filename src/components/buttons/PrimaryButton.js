@@ -4,14 +4,14 @@ import { Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-nat
 
 const PrimaryButton = ({ handlePress, text, allowed, useIndicator }) => {
     return <TouchableOpacity
-                style={styles.container}
+                style={{...styles.container, backgroundColor: allowed ? '#0195f7' : '#bfc2c3'}}
                 activeOpacity={ allowed ? 0.65 : 1 }
                 onPress={handlePress}
             >
         {
             useIndicator
             ? <ActivityIndicator size={'large'} color='white' />
-            : <Text style={{color: 'white'}}>{text}</Text>
+            : <Text style={{color: allowed ? 'white' : 'grey'}}>{text}</Text>
         }
     </TouchableOpacity>
 }

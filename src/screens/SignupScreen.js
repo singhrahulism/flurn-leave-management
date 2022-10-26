@@ -16,8 +16,6 @@ const SignupScreen = () => {
     const [isPasswordValid, setIsPasswordValid] = useState(true)
     const [isValid, setIsValid] = useState(false)
 
-    const isAllowed = false
-
     const handleEmail = (mail) => {
         setEmail(mail)
         setIsEmailValid(true)
@@ -86,8 +84,8 @@ const SignupScreen = () => {
         <Text style={styles.tncContainer}>By signing up, you agree to our Terms & Conditions and Privacy Policy.</Text>
         <PrimaryButton
             text={'Continue'}
-            allowed={isAllowed}
-            handlePress={handlePress}
+            allowed={fullName && email && password}
+            handlePress={fullName && email && password ? handlePress : null}
         />
         <LoginFooter
         />

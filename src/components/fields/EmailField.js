@@ -49,10 +49,10 @@ const EmailField = ({ onInputChange, shouldShakeField }) => {
 
     return <Animated.View style={[styles.container, {left: shake}]}>
         <View style={styles.iconContainer} >
-            <Entypo name="email" size={24} color="#7a869a" />
+            <Entypo name="email" size={24} color={shouldShakeField ? 'red' : '#7a869a'} />
         </View>
         <TextInput
-            style={styles.nameInputContainer}
+            style={[styles.nameInputContainer, {borderBottomColor: shouldShakeField ? 'red' : '#dfe1e5'}]}
             placeholder={'Email address'}
             onChangeText={updatedMail => onInputChange(updatedMail)}
         />
