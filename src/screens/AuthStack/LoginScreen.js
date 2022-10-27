@@ -1,5 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Text, View, StyleSheet, StatusBar, Image, TouchableOpacity} from 'react-native'
+import React, { useState } from 'react'
+import { Text, View, StyleSheet, StatusBar, Image} from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../redux/features/supabaseSlice'
+import { changeLoading } from '../../redux/features/loadingSlice'
+
 import EmailField from '../../components/fields/EmailField'
 import PasswordField from '../../components/fields/PasswordField'
 import PrimaryButton from '../../components/buttons/PrimaryButton'
@@ -9,9 +13,11 @@ const SignupScreen = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [isPasswordValid, setIsPasswordValid] = useState(true)
+
+    const dispatch = useDispatch()
+    const isLoading = useSelector(state => state.loading.value)
 
     const handleEmail = (mail) => {
         setEmail(mail)
@@ -33,9 +39,20 @@ const SignupScreen = () => {
             setIsEmailValid(true)
             if(password.length > 5)
             {
+                // email and password are okay
                 // do login dispatch here
                 setIsPasswordValid(true)
-                alert('proceed peasent.')
+                dispatch(changeLoading(true))
+                dispatch(login({
+                    email: email,
+                    password: password
+                }))
+                .then(() => {
+                    dispatch(changeLoading(false))
+                })
+                .catch(() => {
+                    dispatch(changeLoading(false))
+                })
             }
             else
             {
@@ -73,6 +90,7 @@ const SignupScreen = () => {
             text={'Login'}
             allowed={email && password}
             handlePress={email && password ? handlePress : null}
+            useIndicator={isLoading}
         />
         <SignupFooter
         />
