@@ -1,13 +1,48 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getDateDifference } from '../helperFunctions/getDateDifference';
 
-const SingleLeave = () => {
+const SingleLeave = ({ startingDate, endingDate, reasonForLeave }) => {
+
+    let dateDifference = getDateDifference(startingDate, endingDate)
+    const weekDay = [
+        'Sun',
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+    ]
+    const month = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+    ]
+    const d1w = weekDay[(new Date(startingDate)).getDay()]
+    const d2w = weekDay[(new Date(endingDate)).getDay()]
+
+    const d1d = startingDate.slice(-2)
+    const d2d = endingDate.slice(-2)
+
+    const d1m = month[startingDate.slice(5, 7)-1]
+    const d2m = month[endingDate.slice(5, 7)-1]
+
     return <View style={styles.container}>
         <View style={styles.detailsContainer}>
-            <Text style={styles.totalDaysContainer}>3 days application</Text>
-            <Text style={styles.toFromContainer}>Tue, 22 Nov - Fri, 25 Nov</Text>
-            <Text style={styles.reasonContainer}>Casual</Text>
+            <Text style={styles.totalDaysContainer}>{dateDifference} days application</Text>
+            <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m} - {d2w}, {d2d} {d2m}</Text>
+            <Text style={styles.reasonContainer}>{reasonForLeave ? reasonForLeave : 'No Reason specified'}</Text>
         </View>
         <View style={styles.actionContainer}>
             <TouchableOpacity

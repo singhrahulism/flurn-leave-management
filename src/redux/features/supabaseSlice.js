@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { API_BASE_URL, HEADERS } from "../../constants/apiConstants";
+import { API_BASE_URL, HEADERS, API_KEY } from "../../constants/apiConstants";
 import * as SecureStore from 'expo-secure-store'
 
 const initialState = {
@@ -8,14 +8,15 @@ const initialState = {
         access_token: null,
         refresh_token: null
     },
-    splashStatus: true
+    splashStatus: true,
+    leaves: []
 }
 
 export const login = createAsyncThunk('supabase/login', async({email, password}) => {
     console.log('-> inside login...');
     var options = {  
         method: 'POST',
-        headers: HEADERS,
+        headers: {...HEADERS, 'Authorization': `Bearer ${API_KEY}`},
         body: JSON.stringify({
             "email": `${email}`,
             "password": `${password}`
@@ -51,7 +52,7 @@ export const login = createAsyncThunk('supabase/login', async({email, password})
 export const signup = createAsyncThunk('supabase/signup', async({name, email, password}) => {
     var options = {  
         method: 'POST',
-        headers: HEADERS,
+        headers: {...HEADERS, 'Authorization': `Bearer ${API_KEY}`},
         body: JSON.stringify({
             "email": `${email}`,
             "password": `${password}`,
@@ -85,6 +86,22 @@ export const signup = createAsyncThunk('supabase/signup', async({name, email, pa
     }
 })
 
+export const getLeaves = createAsyncThunk('supabase/getLeaves', async() => {
+    let access_token = await SecureStore.getItemAsync('access_token')
+    var options = {  
+        method: 'GET',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`}
+    }
+    try {
+        const res = await fetch(API_BASE_URL+'/rest/v1/leaves?select=*', options)
+        const response = await res.json()
+        console.log(response)
+        return response
+    } catch (error) {
+        console.log('-> error in getLeaves')
+    }
+})
+
 const supabaseSlice = createSlice({
     name: 'supabase',
     initialState,
@@ -109,6 +126,9 @@ const supabaseSlice = createSlice({
             {
                 state.isSignedIn = true
             }
+        })
+        .addCase(getLeaves.fulfilled, (state, action) => {
+            state.leaves = action.payload
         })
     }
     }

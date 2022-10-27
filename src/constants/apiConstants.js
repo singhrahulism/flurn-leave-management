@@ -4,7 +4,6 @@ export const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 
 export const HEADERS = {
     'apikey': API_KEY,
-    'Authorization': `Bearer ${API_KEY}`,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 }
