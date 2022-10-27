@@ -23,6 +23,7 @@
     "prop-types": "^15.8.1",
     "react": "18.0.0",
     "react-native": "0.69.6",
+    "react-native-calendars": "^1.1290.0",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-image-slider-show": "^1.0.3",
     "react-native-paper": "^4.12.5",
