@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import HomeScreen from "./src/screens/AppStack/HomeScreen";
 import PastLeavesScreen from "./src/screens/AppStack/PastLeavesScreen";
 import UpcomingLeavesScreen from "./src/screens/AppStack/UpcomingLeavesScreen";
+import CreateLeaveScreen from "./src/screens/AppStack/CreateLeaveScreen";
 // AuthStack
 
 import SignupScreen from "./src/screens/AuthStack/SignupScreen";
@@ -15,6 +16,17 @@ import WelcomeScreen from "./src/screens/AuthStack/WelcomeScreen";
 
 const Stack = createNativeStackNavigator()
 const Tab = createMaterialBottomTabNavigator()
+const UpcomingStack = createNativeStackNavigator()
+
+function UpcomingLeavesStack() {
+    return (
+        <UpcomingStack.Navigator>
+            <UpcomingStack.Screen name='Home' component={UpcomingLeavesScreen} options={{headerShown: false}} />
+            <UpcomingStack.Screen name='CreateLeave' component={CreateLeaveScreen} options={{headerShadowVisible: false}} />
+        </UpcomingStack.Navigator>
+    )
+}
+
 
 export const AppStack = () => {
     return (
@@ -35,7 +47,7 @@ export const AppStack = () => {
         >
             <Tab.Screen
                 name="UpcomingLeaves"
-                component={UpcomingLeavesScreen}
+                component={UpcomingLeavesStack}
                 options={{
                     tabBarLabel: 'Upcoming Leaves'
                 }}
