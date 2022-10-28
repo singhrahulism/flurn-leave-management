@@ -72,6 +72,7 @@ const UpcomingLeavesScreen = () => {
 
         <FlatList
             data = {leaves}
+            showsVerticalScrollIndicator={false}
             keyExtractor = {leave => leave.id}
             renderItem = {({item}) => {
                 return <SingleLeave startingDate={item.start_date} endingDate={item.end_date} reasonForLeave={item.reason} />
@@ -87,7 +88,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight,
         marginTop: 30,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        paddingBottom: 55
     },
     headingContainer: {
         fontSize: 25,

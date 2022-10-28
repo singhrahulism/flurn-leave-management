@@ -75,9 +75,9 @@ const CreateLeaveScreen = () => {
         <Text style={styles.headingContainer}>New Leave</Text>
 
         <View style={styles.selectCalendarContainer}>
-            <SelectCalendar title={'To'} setNewDate={date => setStartingDate(date)} />
+            <SelectCalendar title={'To'} setNewDate={date => setStartingDate(date)} isActive={true} />
             <View style={{width: 8}} />
-            <SelectCalendar title={'From'} setNewDate={date => setEndingDate(date)} />
+            <SelectCalendar title={'From'} setNewDate={date => setEndingDate(date)} isActive={startingDate} minimumDate={startingDate} />
         </View>
         <View style={styles.reasonContainer}>
             <Text style={{fontSize: 12}}>Reason (optional)</Text>

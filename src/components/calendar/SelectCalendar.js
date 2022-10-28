@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Modal, DatePickerIOSBase } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
-import { useEffect } from 'react';
 
-const SelectCalendar = ({ title, setNewDate }) => {
+const SelectCalendar = ({ title, setNewDate, isActive, minimumDate }) => {
 
     const today = new Date().toLocaleDateString().slice(0, 10)
 
@@ -33,10 +32,12 @@ const SelectCalendar = ({ title, setNewDate }) => {
         setShowCalendar(true)
     }
 
-    return <TouchableOpacity activeOpacity={0.6} style={styles.container} onPress={handlePress}>
+    console.log('minimumDate: ', minimumDate)
+
+    return <TouchableOpacity activeOpacity={isActive ? 0.6 : 1} style={styles.container} onPress={isActive ? handlePress: null}>
         <View style={{flex: 8}}>
-            <Text style={styles.titleContainer}>{title}</Text>
-            <Text style={styles.dateContainer}>
+            <Text style={[styles.titleContainer, {color: isActive ? 'black' : '#cecece'}]}>{title}</Text>
+            <Text style={[styles.dateContainer, {color: isActive ? 'black' : '#cecece'}]}>
                 {
                     selectedDate === ''
                     ? 'Select date'
@@ -45,7 +46,7 @@ const SelectCalendar = ({ title, setNewDate }) => {
             </Text>
         </View>
         <View style={{flex: 2, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 6}}>
-            <FontAwesome name="calendar-plus-o" size={20} color="#2e2e2e" />
+            <FontAwesome name="calendar-plus-o" size={20} color={isActive ? 'black' : '#cecece'} />
         </View>
         <Modal
             transparent
@@ -62,7 +63,7 @@ const SelectCalendar = ({ title, setNewDate }) => {
                     <Text style={{color: 'white'}}>Dismiss</Text>
                 </TouchableOpacity>
                 <Calendar
-                    minDate={today}
+                    minDate={minimumDate ? minimumDate : today}
                     onDayPress={day => {
                         setDate(day.dateString)
                         setShowCalendar(false)
