@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
 
-const SelectCalendar = ({ title, setNewDate, isActive, minimumDate }) => {
+const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
 
     const today = new Date().toLocaleDateString().slice(0, 10)
 
@@ -39,9 +39,9 @@ const SelectCalendar = ({ title, setNewDate, isActive, minimumDate }) => {
             <Text style={[styles.titleContainer, {color: isActive ? 'black' : '#cecece'}]}>{title}</Text>
             <Text style={[styles.dateContainer, {color: isActive ? 'black' : '#cecece'}]}>
                 {
-                    selectedDate === ''
+                    date === ''
                     ? 'Select date'
-                    : selectedDate
+                    : date
                 }
             </Text>
         </View>

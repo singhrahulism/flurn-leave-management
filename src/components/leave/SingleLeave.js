@@ -68,7 +68,11 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
     return <View style={styles.container}>
         <View style={styles.detailsContainer}>
             <Text style={styles.totalDaysContainer}>{dateDifference} days application</Text>
-            <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m} - {d2w}, {d2d} {d2m}</Text>
+            {
+                startingDate === endingDate
+                ? <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m}</Text>
+                : <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m} - {d2w}, {d2d} {d2m}</Text>
+            }
             <Text style={styles.reasonContainer}>{reasonForLeave ? reasonForLeave : 'No Reason specified'}</Text>
         </View>
         <View style={styles.actionContainer}>

@@ -49,6 +49,8 @@ const CreateLeaveScreen = () => {
         if(startingDate)
         {
             console.log('startingDate', startingDate)
+            setEndingDate('')
+
         }
     }, [startingDate])
     
@@ -75,9 +77,9 @@ const CreateLeaveScreen = () => {
         <Text style={styles.headingContainer}>New Leave</Text>
 
         <View style={styles.selectCalendarContainer}>
-            <SelectCalendar title={'To'} setNewDate={date => setStartingDate(date)} isActive={true} />
+            <SelectCalendar title={'To'} setNewDate={date => setStartingDate(date)} isActive={true} date={startingDate} />
             <View style={{width: 8}} />
-            <SelectCalendar title={'From'} setNewDate={date => setEndingDate(date)} isActive={startingDate} minimumDate={startingDate} />
+            <SelectCalendar title={'From'} setNewDate={date => setEndingDate(date)} isActive={startingDate} minimumDate={startingDate} date={endingDate} />
         </View>
         <View style={styles.reasonContainer}>
             <Text style={{fontSize: 12}}>Reason (optional)</Text>
@@ -90,7 +92,7 @@ const CreateLeaveScreen = () => {
         </View>
         <ApplyLeaveButton
             text={`Apply for ${totalDays} Days Leave`}
-            allowed={totalDays}
+            allowed={startingDate && endingDate}
             handlePress={totalDays ? () => handlePress(startingDate, endingDate, reason) : null}
             useIndicator={isLoading}
         />
