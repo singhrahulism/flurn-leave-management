@@ -1,11 +1,17 @@
 import React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text, View, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
+import { changeAction, changeChanges, changeLoading } from '../../redux/features/loadingSlice';
+import { deleteLeave } from '../../redux/features/supabaseSlice';
 import { getDateDifference } from '../helperFunctions/getDateDifference';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const SingleLeave = ({ startingDate, endingDate, reasonForLeave }) => {
+const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
 
     let dateDifference = getDateDifference(startingDate, endingDate)
+
+    const dispatch = useDispatch()
+
     const weekDay = [
         'Sun',
         'Mon',
@@ -38,6 +44,27 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave }) => {
     const d1m = month[startingDate.slice(5, 7)-1]
     const d2m = month[endingDate.slice(5, 7)-1]
 
+    const handleEdit = () => {
+        console.log(' -> leave edit with id: ', leaveID)
+        
+    }
+    
+    const handleDelete = () => {
+        dispatch(changeLoading(true))
+        dispatch(deleteLeave({leaveID}))
+        .then(() => {
+            dispatch(changeChanges(true))
+            Platform.OS === 'ios' ? alert('Leave deleted successfully.') : ToastAndroid.show("Leave deleted successfully", ToastAndroid.SHORT)
+        })
+        .catch(error => {
+            console.log('-> Error while deleting')
+            dispatch(changeLoading(false))
+            console.log(error)
+        })
+    }
+
+
+
     return <View style={styles.container}>
         <View style={styles.detailsContainer}>
             <Text style={styles.totalDaysContainer}>{dateDifference} days application</Text>
@@ -48,12 +75,14 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave }) => {
             <TouchableOpacity
                 style={[styles.actionIconContainer, {backgroundColor: 'rgba(0, 255, 0, 0.15)'}]}
                 activeOpacity={0.4}
-                >
+                onPress={handleEdit}
+            >
                 <MaterialCommunityIcons name="pencil" size={20} color="black" />
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.actionIconContainer, {backgroundColor: 'rgba(255, 0, 0, 0.15)'}]}
                 activeOpacity={0.4}
+                onPress={handleDelete}
             >
                 <MaterialCommunityIcons name="delete" size={20} color="black" />
             </TouchableOpacity>

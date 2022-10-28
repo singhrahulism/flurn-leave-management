@@ -16,7 +16,7 @@ const UpcomingLeavesScreen = () => {
     const leaves = useSelector(state => state.supabase.leaves)
 
     const getkey = async() => {
-        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY2OTUxNTEwLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6ImQ3YjU5OWYzLTc4NzEtNDU3Ni1hZDM4LTQzZjgxNmRiMmQ4NCJ9.AjHNu6AQPKHmkqlpX-v_QbmvVCtetUKJu0Z1JdqCaRc')
+        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY2OTU1NDMxLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6IjNlODdlNTk0LWM5ODEtNDEyMS1iZTE0LTMyZTExNmY3NmU0ZiJ9.oEOC-WRQS5qf2YU2NZ_3vUqKRCGJkWQdZLm_yqLVcjE')
     }
 
     const handleRefresh = () => {
@@ -51,8 +51,6 @@ const UpcomingLeavesScreen = () => {
         }
     }, [isChanged])
 
-    console.log(leaves[0])
-
     return <View style={styles.container}>
         <View style={styles.headerContainer}>
             <Text style={styles.headingContainer}>Upcoming Leaves</Text>
@@ -69,13 +67,18 @@ const UpcomingLeavesScreen = () => {
             </TouchableOpacity>
         </View>
 
+        {
+            leaves.length === 0 &&
+            <Text style={styles.noLeavesContainer}>No upcoming leaves! Yaahooo 🥳</Text>
+
+        }
 
         <FlatList
             data = {leaves}
             showsVerticalScrollIndicator={false}
             keyExtractor = {leave => leave.id}
             renderItem = {({item}) => {
-                return <SingleLeave startingDate={item.start_date} endingDate={item.end_date} reasonForLeave={item.reason} />
+                return <SingleLeave startingDate={item.start_date} endingDate={item.end_date} reasonForLeave={item.reason} leaveID={item.id} />
             }}
         />
 
@@ -108,6 +111,12 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         width: 75,
         alignItems: 'center'
+    },
+    noLeavesContainer: {
+        textAlign: 'center',
+        marginTop: '70%',
+        fontWeight: 'bold',
+        color: '#5f66e1'
     }
 })
 

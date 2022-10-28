@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_BASE_URL, HEADERS, API_KEY } from "../../constants/apiConstants";
 import * as SecureStore from 'expo-secure-store'
+import { Platform, ToastAndroid } from "react-native";
 
 const initialState = {
     isSignedIn: false,
@@ -95,7 +96,7 @@ export const getLeaves = createAsyncThunk('supabase/getLeaves', async() => {
     try {
         const res = await fetch(API_BASE_URL+'/rest/v1/leaves?select=*', options)
         const response = await res.json()
-        console.log(response)
+        // console.log(response)
         return response
     } catch (error) {
         console.log('-> error in getLeaves')
@@ -137,6 +138,24 @@ export const createLeave = createAsyncThunk('supabase/createLeave', async({ star
     }
 })
 
+export const deleteLeave = createAsyncThunk('supabase/deleteLeave', async({leaveID}) => {
+    console.log(' -> deleting Leave with id: ', leaveID)
+    let access_token = await SecureStore.getItemAsync('access_token')
+    var options = {
+        method: 'DELETE',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`}
+    }
+    try {
+        console.log('-> attempting delete...')
+        let apiURL = `${API_BASE_URL}/rest/v1/leaves?id=eq.${leaveID}`
+        // await fetch(API_BASE_URL+`/rest/v1/leaves?id=eq.${leaveID}`, options)
+        await fetch(apiURL, options)
+        console.log('-> deleted...')
+    } catch (error) {
+        console.log('-> error in getLeaves')
+    }
+})
+
 const supabaseSlice = createSlice({
     name: 'supabase',
     initialState,
@@ -163,7 +182,14 @@ const supabaseSlice = createSlice({
             }
         })
         .addCase(getLeaves.fulfilled, (state, action) => {
-            state.leaves = action.payload
+            if(action.payload.message)
+            {
+                Platform.OS === 'ios' ? alert(action.payload.message) : ToastAndroid.show(action.payload.message, ToastAndroid.LONG)
+            }
+            else
+            {
+                state.leaves = action.payload
+            }
         })
         // .addCase(createLeave.fulfilled, (state, action) => {
         //     state.leaves += action.payload
