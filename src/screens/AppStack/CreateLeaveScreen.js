@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, Platform, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { createLeave } from '../../redux/features/supabaseSlice';
+import { createLeave, getLeaves } from '../../redux/features/supabaseSlice';
 import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
 import SelectCalendar from '../../components/calendar/SelectCalendar';
 import ApplyLeaveButton from '../../components/buttons/ApplyLeaveButton';
@@ -29,13 +29,12 @@ const CreateLeaveScreen = () => {
         .then(() => {
             dispatch(changeLoading(false))
             dispatch(changeChanges(true))
-            console.log(' -> leave created successfully')
-            Platform.OS === 'ios' ? alert('Leave created successfully.') : ToastAndroid.show("Leave created successfully", ToastAndroid.SHORT)
             navigation.goBack()
         })
         .catch(() => {
             dispatch(changeLoading(false))
-            console.log(' -> leave created successfully')
+            console.log(' -> leave NOT created successfully')
+            navigation.goBack()
         })
     }
 

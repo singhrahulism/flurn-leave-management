@@ -16,7 +16,7 @@ const UpcomingLeavesScreen = () => {
     const leaves = useSelector(state => state.supabase.leaves)
 
     const getkey = async() => {
-        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY2OTgxMTI5LCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6IjJjYWY2ZjJhLTQ2N2ItNGU1NS1hMjU0LTczOWE3MjkzNjI1ZCJ9.ok1wFwIv6KWwXW2jNEZK2nVQSYEgVOpJRptvFMq6_m4')
+        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY2OTg2NTc5LCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6Ijc4OGM3MGFhLTg3NDYtNGRkMC1iZWFlLTY1MzE0ZTg3ODg3MCJ9.KbN-Qrb1HtZwDEvJ-uJ-8r2k0MVoJ1r0o3AcPAvIrtM')
     }
 
     const handleRefresh = () => {

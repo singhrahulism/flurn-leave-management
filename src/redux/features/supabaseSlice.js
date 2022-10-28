@@ -132,7 +132,8 @@ export const createLeave = createAsyncThunk('supabase/createLeave', async({ star
         }
     }
     try {
-        await fetch(API_BASE_URL+'/rest/v1/leaves', options)
+        const response = await fetch(API_BASE_URL+'/rest/v1/leaves', options)
+        return response
     } catch (error) {
         console.log('-> error in getLeaves')
     }
@@ -151,6 +152,55 @@ export const deleteLeave = createAsyncThunk('supabase/deleteLeave', async({leave
         // await fetch(API_BASE_URL+`/rest/v1/leaves?id=eq.${leaveID}`, options)
         await fetch(apiURL, options)
         console.log('-> deleted...')
+    } catch (error) {
+        console.log('-> error in getLeaves')
+    }
+})
+
+export const editLeave = createAsyncThunk('supabase/editLeave', async({ start_date, end_date, leaveID }) => {
+    console.log(' -> editing Leave with id: ', leaveID)
+    let access_token = await SecureStore.getItemAsync('access_token')
+    
+    if(start_date)
+    {
+        if(end_date)
+        {
+            var options = {  
+                method: 'PATCH',
+                headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+                body: JSON.stringify({
+                    "start_date": `${start_date}`,
+                    "end_date": `${end_date}`
+                })
+            }
+        }
+        else
+        {
+            var options = {  
+                method: 'POST',
+                headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+                body: JSON.stringify({
+                    "start_date": `${start_date}`
+                })
+            }
+        }
+    }
+    else
+    {
+        var options = {  
+            method: 'POST',
+            headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+            body: JSON.stringify({
+                "end_date": `${end_date}`
+            })
+        }
+    }
+    
+    try {
+        console.log('-> attempting editing...')
+        let apiURL = `${API_BASE_URL}/rest/v1/leaves?id=eq.${leaveID}`
+        await fetch(apiURL, options)
+        console.log('-> edited...')
     } catch (error) {
         console.log('-> error in getLeaves')
     }
@@ -189,6 +239,18 @@ const supabaseSlice = createSlice({
             else
             {
                 state.leaves = action.payload
+            }
+        })
+        .addCase(createLeave.fulfilled, (state, action) => {
+            if(action.payload.ok === false)
+            {
+                console.log('-> Error creating leave.')
+                Platform.OS === 'ios' ? alert('Error creating Leave.') : ToastAndroid.show('Error creating Leave', ToastAndroid.SHORT)
+            }
+            else
+            {
+                console.log('-> Leave created successfully.')
+                Platform.OS === 'ios' ? alert('Leave created successfully.') : ToastAndroid.show("Leave created successfully", ToastAndroid.SHORT)
             }
         })
         // .addCase(createLeave.fulfilled, (state, action) => {
