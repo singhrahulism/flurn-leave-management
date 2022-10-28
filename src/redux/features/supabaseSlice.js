@@ -102,6 +102,41 @@ export const getLeaves = createAsyncThunk('supabase/getLeaves', async() => {
     }
 })
 
+export const createLeave = createAsyncThunk('supabase/createLeave', async({ start_date, end_date, reason }) => {
+    console.log(' -> creating Leave')
+    console.log(`start_date: '${start_date}'`)
+    console.log(`end_date: '${end_date}'`)
+    let access_token = await SecureStore.getItemAsync('access_token')
+    if(reason)
+    {
+        var options = {  
+            method: 'POST',
+            headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+            body: JSON.stringify({
+                "start_date": `${start_date}`,
+                "end_date": `${end_date}`,
+                "reason": `${reason}`
+            })
+        }
+    }
+    else
+    {
+        var options = {  
+            method: 'POST',
+            headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+            body: JSON.stringify({
+                "start_date": `${start_date}`,
+                "end_date": `${end_date}`
+            })
+        }
+    }
+    try {
+        await fetch(API_BASE_URL+'/rest/v1/leaves', options)
+    } catch (error) {
+        console.log('-> error in getLeaves')
+    }
+})
+
 const supabaseSlice = createSlice({
     name: 'supabase',
     initialState,
@@ -130,6 +165,9 @@ const supabaseSlice = createSlice({
         .addCase(getLeaves.fulfilled, (state, action) => {
             state.leaves = action.payload
         })
+        // .addCase(createLeave.fulfilled, (state, action) => {
+        //     state.leaves += action.payload
+        // })
     }
     }
 )

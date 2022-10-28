@@ -1,20 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons';
+import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, Platform, ToastAndroid } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
+import { createLeave } from '../../redux/features/supabaseSlice';
+import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
 import SelectCalendar from '../../components/calendar/SelectCalendar';
 import ApplyLeaveButton from '../../components/buttons/ApplyLeaveButton';
 import { getDateDifference } from '../../components/helperFunctions/getDateDifference';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const CreateLeaveScreen = () => {
 
     const navigation = useNavigation()
+    const dispatch = useDispatch()
+
+    const isLoading = useSelector(state => state.loading.value)
+    const isChanged = useSelector(state => state.loading.changes)
+
     const [startingDate, setStartingDate] = useState('')
     const [endingDate, setEndingDate] = useState('')
+    const [reason, setReason] = useState('')
     const [totalDays, setTotalDays] = useState(0)
 
-    const handlePress = () => {
-        console.log('Applying for leaves...')
+    const handlePress = (start_date, end_date, reason) => {
+        console.log('Applying for leave...')
+        dispatch(changeLoading(true))
+        dispatch(createLeave({start_date, end_date, reason}))
+        .then(() => {
+            dispatch(changeLoading(false))
+            dispatch(changeChanges(true))
+            console.log(' -> leave created successfully')
+            Platform.OS === 'ios' ? alert('Leave created successfully.') : ToastAndroid.show("Leave created successfully", ToastAndroid.SHORT)
+            navigation.goBack()
+        })
+        .catch(() => {
+            dispatch(changeLoading(false))
+            console.log(' -> leave created successfully')
+        })
     }
 
     useEffect(() => {
@@ -63,12 +85,14 @@ const CreateLeaveScreen = () => {
                 multiline
                 style={styles.reasonInputContainer}
                 placeholder={'Type reason here.'}
+                onChangeText={updatedReason => setReason(updatedReason)}
             />
         </View>
         <ApplyLeaveButton
             text={`Apply for ${totalDays} Days Leave`}
             allowed={totalDays}
-            handlePress={totalDays ? handlePress : null}
+            handlePress={totalDays ? () => handlePress(startingDate, endingDate, reason) : null}
+            useIndicator={isLoading}
         />
     </View>
 }

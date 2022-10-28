@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    value: false
+    value: false,
+    changes: false
 }
 
 const loadingSlice = createSlice({
@@ -10,10 +11,13 @@ const loadingSlice = createSlice({
     reducers: {
         changeLoading: (state, action) => {
             state.value = action.payload
+        },
+        changeChanges: (state, action) => {
+            state.changes = action.payload
         }
     }
 })
 
-export const { changeLoading } = loadingSlice.actions
+export const { changeLoading, changeChanges } = loadingSlice.actions
 
 export default loadingSlice.reducer
