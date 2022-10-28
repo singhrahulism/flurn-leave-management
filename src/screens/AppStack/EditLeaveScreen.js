@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, Platform, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { createLeave, getLeaves } from '../../redux/features/supabaseSlice';
+import { editLeave } from '../../redux/features/supabaseSlice';
 import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
 import SelectCalendar from '../../components/calendar/SelectCalendar';
 import ApplyLeaveButton from '../../components/buttons/ApplyLeaveButton';
 import { getDateDifference } from '../../components/helperFunctions/getDateDifference';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const CreateLeaveScreen = () => {
+const EditLeaveScreen = ({ route }) => {
+
+    const { prevStartDate, prevEndDate, leaveID } = route.params
 
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -17,15 +19,15 @@ const CreateLeaveScreen = () => {
     const isLoading = useSelector(state => state.loading.value)
     const isChanged = useSelector(state => state.loading.changes)
 
-    const [startingDate, setStartingDate] = useState('')
-    const [endingDate, setEndingDate] = useState('')
-    const [reason, setReason] = useState('')
+    const [startingDate, setStartingDate] = useState(prevStartDate)
+    const [endingDate, setEndingDate] = useState(prevEndDate)
     const [totalDays, setTotalDays] = useState(0)
 
-    const handlePress = (start_date, end_date, reason) => {
-        console.log('Applying for leave...')
+    const handlePress = () => {
+
+        console.log('Editing leave...')
         dispatch(changeLoading(true))
-        dispatch(createLeave({start_date, end_date, reason}))
+        dispatch(editLeave({startingDate, endingDate, leaveID}))
         .then(() => {
             dispatch(changeLoading(false))
             dispatch(changeChanges(true))
@@ -33,7 +35,7 @@ const CreateLeaveScreen = () => {
         })
         .catch(() => {
             dispatch(changeLoading(false))
-            console.log(' -> leave NOT created successfully')
+            console.log(' -> leave NOT edited...')
             navigation.goBack()
         })
     }
@@ -76,26 +78,22 @@ const CreateLeaveScreen = () => {
         <TouchableOpacity activeOpacity={0.7} style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
             <MaterialIcons name="keyboard-arrow-left" size={30} color="#4e4e4e" />
         </TouchableOpacity>
-        <Text style={styles.headingContainer}>New Leave</Text>
+        <Text style={styles.headingContainer}>Edit Leave</Text>
 
         <View style={styles.selectCalendarContainer}>
             <SelectCalendar title={'From'} setNewDate={date => setStartingDate(date)} isActive={true} date={startingDate} />
             <View style={{width: 8}} />
             <SelectCalendar title={'To'} setNewDate={date => setEndingDate(date)} isActive={startingDate} minimumDate={startingDate} date={endingDate} />
         </View>
-        <View style={styles.reasonContainer}>
-            <Text style={{fontSize: 12}}>Reason (optional)</Text>
-            <TextInput
-                multiline
-                style={styles.reasonInputContainer}
-                placeholder={'Type reason here.'}
-                onChangeText={updatedReason => setReason(updatedReason)}
-            />
-        </View>
+        
         <ApplyLeaveButton
-            text={`Apply for ${totalDays} Days Leave`}
-            allowed={startingDate && endingDate}
-            handlePress={totalDays ? () => handlePress(startingDate, endingDate, reason) : null}
+            text={`Edit Leave for ${totalDays} Days`}
+            allowed={(startingDate !== prevStartDate || endingDate !== prevEndDate) && endingDate !== '' }
+            handlePress={
+                totalDays && (startingDate !== prevEndDate || endingDate !== prevEndDate) && endingDate !== '' 
+                ? handlePress
+                : null
+            }
             useIndicator={isLoading}
         />
     </View>
@@ -127,20 +125,7 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between'
-    },
-    reasonContainer: {
-        marginTop: 8,
-        borderWidth: 1,
-        borderColor: '#cecece',
-        borderRadius: 4,
-        paddingTop: 2,
-        paddingHorizontal: 6,
-        paddingBottom: 4,
-        minHeight: 100
-    },
-    reasonInputContainer: {
-        marginVertical: 4
     }
 })
 
-export default CreateLeaveScreen ;
+export default EditLeaveScreen ;

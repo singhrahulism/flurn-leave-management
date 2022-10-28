@@ -32,7 +32,7 @@ const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
         setShowCalendar(true)
     }
 
-    console.log('minimumDate: ', minimumDate)
+    // console.log('minimumDate: ', minimumDate)
 
     return <TouchableOpacity activeOpacity={isActive ? 0.6 : 1} style={styles.container} onPress={isActive ? handlePress: null}>
         <View style={{flex: 8}}>

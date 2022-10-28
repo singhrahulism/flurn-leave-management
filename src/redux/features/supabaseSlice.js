@@ -157,43 +157,17 @@ export const deleteLeave = createAsyncThunk('supabase/deleteLeave', async({leave
     }
 })
 
-export const editLeave = createAsyncThunk('supabase/editLeave', async({ start_date, end_date, leaveID }) => {
+export const editLeave = createAsyncThunk('supabase/editLeave', async({ startingDate, endingDate, leaveID }) => {
     console.log(' -> editing Leave with id: ', leaveID)
     let access_token = await SecureStore.getItemAsync('access_token')
     
-    if(start_date)
-    {
-        if(end_date)
-        {
-            var options = {  
-                method: 'PATCH',
-                headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
-                body: JSON.stringify({
-                    "start_date": `${start_date}`,
-                    "end_date": `${end_date}`
-                })
-            }
-        }
-        else
-        {
-            var options = {  
-                method: 'POST',
-                headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
-                body: JSON.stringify({
-                    "start_date": `${start_date}`
-                })
-            }
-        }
-    }
-    else
-    {
-        var options = {  
-            method: 'POST',
-            headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
-            body: JSON.stringify({
-                "end_date": `${end_date}`
-            })
-        }
+    var options = {  
+        method: 'PATCH',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+        body: JSON.stringify({
+            "start_date": `${startingDate}`,
+            "end_date": `${endingDate}`
+        })
     }
     
     try {

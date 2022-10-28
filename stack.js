@@ -8,6 +8,9 @@ import HomeScreen from "./src/screens/AppStack/HomeScreen";
 import PastLeavesScreen from "./src/screens/AppStack/PastLeavesScreen";
 import UpcomingLeavesScreen from "./src/screens/AppStack/UpcomingLeavesScreen";
 import CreateLeaveScreen from "./src/screens/AppStack/CreateLeaveScreen";
+import EditLeaveScreen from "./src/screens/AppStack/EditLeaveScreen";
+
+
 // AuthStack
 
 import SignupScreen from "./src/screens/AuthStack/SignupScreen";
@@ -23,6 +26,7 @@ function UpcomingLeavesStack() {
         <UpcomingStack.Navigator>
             <UpcomingStack.Screen name='Home' component={UpcomingLeavesScreen} options={{headerShown: false}} />
             <UpcomingStack.Screen name='CreateLeave' component={CreateLeaveScreen} options={{headerShadowVisible: false}} />
+            <UpcomingStack.Screen name='EditLeave' component={EditLeaveScreen} options={{headerShadowVisible: false}} />
         </UpcomingStack.Navigator>
     )
 }

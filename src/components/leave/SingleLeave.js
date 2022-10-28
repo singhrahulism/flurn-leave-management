@@ -1,7 +1,8 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux';
-import { changeAction, changeChanges, changeLoading } from '../../redux/features/loadingSlice';
+import { useDispatch } from 'react-redux';
+import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
 import { deleteLeave } from '../../redux/features/supabaseSlice';
 import { getDateDifference } from '../helperFunctions/getDateDifference';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,6 +12,7 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
     let dateDifference = getDateDifference(startingDate, endingDate)
 
     const dispatch = useDispatch()
+    const navigation = useNavigation()
 
     const weekDay = [
         'Sun',
@@ -46,6 +48,7 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
 
     const handleEdit = () => {
         console.log(' -> leave edit with id: ', leaveID)
+        navigation.navigate('EditLeave', { prevStartDate: startingDate, prevEndDate: endingDate, leaveID: leaveID })
         
     }
     
