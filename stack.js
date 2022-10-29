@@ -1,17 +1,18 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 // AppStack
 
 import HomeScreen from "./src/screens/AppStack/HomeScreen";
-import PastLeavesScreen from "./src/screens/AppStack/PastLeavesScreen";
+import AccountScreen from "./src/screens/AppStack/AccountScreen";
 import UpcomingLeavesScreen from "./src/screens/AppStack/UpcomingLeavesScreen";
 import CreateLeaveScreen from "./src/screens/AppStack/CreateLeaveScreen";
 import EditLeaveScreen from "./src/screens/AppStack/EditLeaveScreen";
 import FilterLeavesScreen from "./src/screens/AppStack/FilterLeavesScreen";
-
-import TestScreen from "./src/screens/AppStack/TestScreen";
+import LeavesScreen from "./src/screens/AppStack/LeavesScreen";
+import ChangePasswordScreen from "./src/screens/AppStack/ChangePassword";
 
 // AuthStack
 
@@ -21,20 +22,29 @@ import WelcomeScreen from "./src/screens/AuthStack/WelcomeScreen";
 
 const Stack = createNativeStackNavigator()
 const Tab = createMaterialBottomTabNavigator()
-const UpcomingStack = createNativeStackNavigator()
+const LeaveStack = createNativeStackNavigator()
+const UserStack = createNativeStackNavigator()
 
-function UpcomingLeavesStack() {
+function LeavesStack() {
     return (
-        <UpcomingStack.Navigator>
-            <UpcomingStack.Screen name='Test' component={TestScreen} options={{headerShown: false}} />
-            <UpcomingStack.Screen name='Home' component={UpcomingLeavesScreen} options={{headerShown: false}} />
-            <UpcomingStack.Screen name='CreateLeave' component={CreateLeaveScreen} options={{headerShadowVisible: false}} />
-            <UpcomingStack.Screen name='EditLeave' component={EditLeaveScreen} options={{headerShadowVisible: false}} />
-            <UpcomingStack.Screen name='FilterLeaves' component={FilterLeavesScreen} options={{headerShadowVisible: false}} />
-        </UpcomingStack.Navigator>
+        <LeaveStack.Navigator>
+            <LeaveStack.Screen name='Leaves' component={LeavesScreen} options={{headerShown: false}} />
+            <LeaveStack.Screen name='Home' component={UpcomingLeavesScreen} options={{headerShown: false}} />
+            <LeaveStack.Screen name='CreateLeave' component={CreateLeaveScreen} options={{headerShadowVisible: false}} />
+            <LeaveStack.Screen name='EditLeave' component={EditLeaveScreen} options={{headerShadowVisible: false}} />
+            <LeaveStack.Screen name='FilterLeaves' component={FilterLeavesScreen} options={{headerShadowVisible: false}} />
+        </LeaveStack.Navigator>
     )
 }
 
+function AccountStack() {
+    return (
+        <UserStack.Navigator>
+            <UserStack.Screen name='Account' component={AccountScreen} options={{headerShown: false}} />
+            <UserStack.Screen name='ChangePassword' component={ChangePasswordScreen} options={{headerShown: false}} />
+        </UserStack.Navigator>
+    )
+}
 
 export const AppStack = () => {
     return (
@@ -42,29 +52,36 @@ export const AppStack = () => {
             barStyle={{ backgroundColor: '#20ad45' }}
             shifting={true}
             screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
+                tabBarIcon: ({ focused }) => {
                 let iconName;
                 if (route.name === 'UpcomingLeaves' || route.name == 'UpcomingLeave1') {
                     iconName = focused ? 'clockcircle' : 'clockcircleo'
                 } else if (route.name === 'PastLeaves') {
-                    iconName = focused ? 'checkcircle' : 'checkcircleo'
+                    iconName = focused ? 'user-circle' : 'user-circle-o'
                 }
-                return <AntDesign name={iconName} size={22} color="white" />
+                if(iconName === 'user-circle' || iconName === 'user-circle-o')
+                {
+                    return <FontAwesome name={iconName} size={22} color="white" />
+                }
+                else
+                {
+                    return <AntDesign name={iconName} size={22} color="white" />
+                }
                 },
             })}
         >
             <Tab.Screen
                 name="UpcomingLeaves"
-                component={UpcomingLeavesStack}
+                component={LeavesStack}
                 options={{
-                    tabBarLabel: 'Upcoming Leaves'
+                    tabBarLabel: 'Leaves'
                 }}
             />
             <Tab.Screen
                 name="PastLeaves"
-                component={PastLeavesScreen}
+                component={AccountStack}
                 options={{
-                    tabBarLabel: 'Past Leaves'
+                    tabBarLabel: 'Account'
                 }}
             />
         </Tab.Navigator>

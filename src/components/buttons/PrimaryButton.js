@@ -4,7 +4,7 @@ import { Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-nat
 
 const PrimaryButton = ({ handlePress, text, allowed, useIndicator }) => {
     return <TouchableOpacity
-                style={{...styles.container, backgroundColor: allowed ? '#0195f7' : '#bfc2c3'}}
+                style={{...styles.container, backgroundColor: allowed ? 'rgba(32, 173, 69, 0.8)' : '#bfc2c3'}}
                 activeOpacity={ allowed ? 0.65 : 1 }
                 onPress={handlePress}
             >
@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         height: 45,
         width: '100%',
-        borderRadius: 4,
-        backgroundColor: '#0195f7'
+        borderRadius: 4
     }
 })
 

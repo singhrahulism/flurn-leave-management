@@ -10,6 +10,7 @@ const initialState = {
         access_token: null,
         refresh_token: null
     },
+    user: {},
     splashStatus: true,
     leaves: [],
     leavesDuration: 'All leaves'
@@ -87,6 +88,57 @@ export const signup = createAsyncThunk('supabase/signup', async({name, email, pa
         
     } catch (error) {
         console.log(' -> signup error');
+    }
+})
+
+export const getUser = createAsyncThunk('supabase/getUser', async() => {
+    let access_token = await SecureStore.getItemAsync('access_token')
+    var options = {  
+        method: 'GET',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`}
+    }
+    try {
+        const res = await fetch(API_BASE_URL+'/auth/v1/user', options)
+        const response = await res.json()
+        return response
+    } catch (error) {
+        console.log('-> error in getting user data')
+    }
+})
+
+export const changePassword = createAsyncThunk('supabase/changePassword', async({ email, password }) => {
+    console.log('-> changing passwordd')
+    let access_token = await SecureStore.getItemAsync('access_token')
+    var options = {  
+        method: 'PUT',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+        body: JSON.stringify({
+            "email": `${email}`,
+            "password": `${password}`
+        })
+    }
+    try {
+        const res = await fetch(API_BASE_URL+'/auth/v1/user', options)
+        const response = await res.json()
+        return response
+    } catch (error) {
+        console.log('-> error in getting user data')
+    }
+})
+
+export const logoutUser = createAsyncThunk('supabase/logoutUser', async() => {
+    console.log('-> logging out')
+    let access_token = await SecureStore.getItemAsync('access_token')
+    var options = {  
+        method: 'POST',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`}
+    }
+    try {
+        await fetch(API_BASE_URL+'/auth/v1/logout', options)
+        await SecureStore.setItemAsync('access_token', '')
+        await SecureStore.setItemAsync('refresh_token', '')
+    } catch (error) {
+        console.log('-> error in getting user data')
     }
 })
 
@@ -227,6 +279,33 @@ const supabaseSlice = createSlice({
             {
                 state.isSignedIn = true
             }
+        })
+        .addCase(getUser.fulfilled, (state, action) => {
+            if(action.payload.aud)
+            {
+                state.user = action.payload
+            }
+            else
+            {
+                Platform.OS === 'ios' ? alert(action.payload.message) : ToastAndroid.show(action.payload.message, ToastAndroid.LONG)
+            }
+        })
+        .addCase(changePassword.fulfilled, (state, action) => {
+            if(action.payload.aud)
+            {
+                Platform.OS === 'ios' ? alert('Password changed successfully') : ToastAndroid.show('Password changed successfully', ToastAndroid.LONG)
+                state.user = action.payload
+            }
+            else
+            {
+                Platform.OS === 'ios' ? alert(action.payload.msg) : ToastAndroid.show(action.payload.msg, ToastAndroid.LONG)
+            }
+        })
+        .addCase(logoutUser.fulfilled, (state, action) => {
+            state.user = {}
+            state.leaves = []
+            state.token.access_token = ''
+            state.token.refresh_token = ''
         })
         .addCase(getLeaves.fulfilled, (state, action) => {
             if(action.payload.message)

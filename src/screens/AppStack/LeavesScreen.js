@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, StatusBar, Button, FlatList, TouchableOpacity, ActivityIndicator, Modal, Image, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, TouchableOpacity, ActivityIndicator, Modal, Image, ScrollView, Platform, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
@@ -8,13 +8,12 @@ import * as SecureStore from 'expo-secure-store'
 import { changeLoading, changeChanges } from '../../redux/features/loadingSlice'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FloatingActionButton from '../../components/buttons/FloatingActionButton'
-import SingleLeave from '../../components/leave/SingleLeave'
 import ViewLeaves from '../../components/leave/ViewLeaves';
 
 import { getCalendarPeriodDates } from '../../components/helperFunctions/getCalendarPeriodDates';
 import { getRandomColor } from '../../components/helperFunctions/getRandomColor';
 
-const TestScreen = () => {
+const LeavesScreen = () => {
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -36,7 +35,7 @@ const TestScreen = () => {
     var calendarLeaves = leaves.map(({start_date, end_date}) => ({fromDate: start_date, toDate:end_date, color: getRandomColor()}))
     
     const getkey = async() => {
-        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY3MDY4MzYzLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6ImMwNDgyMzRjLTgyYmYtNDBlMS1hNTIwLTBiNzA5OWQ1MjQ4NiJ9.2ZkIjvBI16354kWoesDTeXKi1KED_bEKeXXPl2c-1no')
+        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY3MDc1NjQxLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6Ijc5NDM5YmNiLTQ0ZTEtNGM1Zi05M2EyLTdmYWEzN2UxYzJmZSJ9.d59vyvtkzQjw5RBoW6CSg02ZGjFrvnHoCKmo9Z2L8Yg')
     }
 
 
@@ -44,6 +43,7 @@ const TestScreen = () => {
         dispatch(changeLoading(true))
         dispatch(getLeaves())
         .then(() => {
+            Platform.OS === 'ios' ? null : ToastAndroid.show('Refreshed', ToastAndroid.SHORT)
             dispatch(changeLoading(false))
             dispatch(changeChanges(false))
         })
@@ -229,4 +229,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default TestScreen ;
+export default LeavesScreen ;
