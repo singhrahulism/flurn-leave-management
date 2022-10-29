@@ -3,8 +3,7 @@ import { Text, View, StyleSheet, StatusBar, Button, FlatList, TouchableOpacity, 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
-import { changeIsSignedIn, getLeaves } from '../../redux/features/supabaseSlice'
-import * as SecureStore from 'expo-secure-store'
+import { getLeaves } from '../../redux/features/supabaseSlice'
 import { changeLoading, changeChanges } from '../../redux/features/loadingSlice'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FloatingActionButton from '../../components/buttons/FloatingActionButton'
@@ -21,7 +20,6 @@ const UpcomingLeavesScreen = () => {
     const isChanged = useSelector(state => state.loading.changes)
     const leaves = useSelector(state => state.supabase.leaves)
     const [showCalendar, setShowCalendar] = useState(false)
-    const [filterType, setFilterType] = useState('all');
     
     var calendarLeaves = leaves.map(({start_date, end_date}) => ({fromDate: start_date, toDate:end_date, color: getRandomColor()}))
 

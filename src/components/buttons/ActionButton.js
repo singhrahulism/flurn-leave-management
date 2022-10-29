@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ActionButton = ({ title, iconName, handlePress, useIndicator }) => {

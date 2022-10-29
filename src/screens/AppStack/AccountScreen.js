@@ -1,6 +1,5 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { Text, View, StyleSheet, Button, StatusBar } from 'react-native'
+import React, { useEffect } from 'react'
+import { Text, View, StyleSheet, StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { useDispatch, useSelector } from 'react-redux'

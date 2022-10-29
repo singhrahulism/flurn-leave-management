@@ -3,8 +3,7 @@ import { Text, View, StyleSheet, StatusBar, TouchableOpacity, ActivityIndicator,
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
-import { changeIsSignedIn, getLeaves } from '../../redux/features/supabaseSlice'
-import * as SecureStore from 'expo-secure-store'
+import { getLeaves } from '../../redux/features/supabaseSlice'
 import { changeLoading, changeChanges } from '../../redux/features/loadingSlice'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FloatingActionButton from '../../components/buttons/FloatingActionButton'
