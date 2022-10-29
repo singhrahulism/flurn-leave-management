@@ -43,8 +43,7 @@ const App = () => {
 
     return (
     <NavigationContainer>
-      {/* { stack === true ? <AppStack /> : <AuthStack /> } */}
-      <AppStack />
+      { stack === true ? <AppStack /> : <AuthStack /> }
     </NavigationContainer>
     )
 }

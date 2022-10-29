@@ -24,11 +24,6 @@ const UpcomingLeavesScreen = () => {
     const [filterType, setFilterType] = useState('all');
     
     var calendarLeaves = leaves.map(({start_date, end_date}) => ({fromDate: start_date, toDate:end_date, color: getRandomColor()}))
-    
-    const getkey = async() => {
-        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY3MDQzMTUzLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6ImRkZDBkZmVjLTk1ZjQtNDM2Mi1hM2M3LWY1ZTczZjU4N2ViYyJ9.ZEatSZ1m2Lw3MNBGVAvAFfkBF19oPDgROcMcBZnbCS0')
-    }
-
 
     const handleRefresh = () => {
         dispatch(changeLoading(true))
@@ -46,10 +41,6 @@ const UpcomingLeavesScreen = () => {
     useEffect(() => {
         console.log('leaves changed...')
     }, [leaves])
-
-    useEffect(() => {
-        getkey()
-    }, [])
 
     useEffect(() => {
         if(isChanged)

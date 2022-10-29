@@ -36,7 +36,7 @@ export const login = createAsyncThunk('supabase/login', async({email, password})
             switch(response.error)
                 {
                     case 'invalid_grant':
-                        alert(response.error_description)
+                        Platform.OS === 'ios' ? alert(response.error_description) : ToastAndroid.show(response.error_description, ToastAndroid.LONG)
                         break
                 }
                 // await SecureStore.getItemAsync('dummykey')
@@ -306,6 +306,7 @@ const supabaseSlice = createSlice({
             state.leaves = []
             state.token.access_token = ''
             state.token.refresh_token = ''
+            state.isSignedIn = false
         })
         .addCase(getLeaves.fulfilled, (state, action) => {
             if(action.payload.message)

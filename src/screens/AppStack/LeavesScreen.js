@@ -33,11 +33,6 @@ const LeavesScreen = () => {
     const [showCalendar, setShowCalendar] = useState(false)
     
     var calendarLeaves = leaves.map(({start_date, end_date}) => ({fromDate: start_date, toDate:end_date, color: getRandomColor()}))
-    
-    const getkey = async() => {
-        await SecureStore.setItemAsync('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjY3MDc1NjQxLCJzdWIiOiJhMDY0MmU3OS00YzMxLTRkNTgtYmE2Ny1mMzQ0YmJmMDUzNDQiLCJlbWFpbCI6InJhaHVsQHRlc3QuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJuYW1lIjoidW5kZWZpbmVkIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwic2Vzc2lvbl9pZCI6Ijc5NDM5YmNiLTQ0ZTEtNGM1Zi05M2EyLTdmYWEzN2UxYzJmZSJ9.d59vyvtkzQjw5RBoW6CSg02ZGjFrvnHoCKmo9Z2L8Yg')
-    }
-
 
     const handleRefresh = () => {
         dispatch(changeLoading(true))
@@ -56,10 +51,6 @@ const LeavesScreen = () => {
     useEffect(() => {
         console.log('leaves changed...')
     }, [leaves])
-
-    useEffect(() => {
-        getkey()
-    }, [])
 
     useEffect(() => {
         if(isChanged)
