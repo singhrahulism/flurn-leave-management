@@ -9,7 +9,9 @@ import PastLeavesScreen from "./src/screens/AppStack/PastLeavesScreen";
 import UpcomingLeavesScreen from "./src/screens/AppStack/UpcomingLeavesScreen";
 import CreateLeaveScreen from "./src/screens/AppStack/CreateLeaveScreen";
 import EditLeaveScreen from "./src/screens/AppStack/EditLeaveScreen";
+import FilterLeavesScreen from "./src/screens/AppStack/FilterLeavesScreen";
 
+import TestScreen from "./src/screens/AppStack/TestScreen";
 
 // AuthStack
 
@@ -24,9 +26,11 @@ const UpcomingStack = createNativeStackNavigator()
 function UpcomingLeavesStack() {
     return (
         <UpcomingStack.Navigator>
+            <UpcomingStack.Screen name='Test' component={TestScreen} options={{headerShown: false}} />
             <UpcomingStack.Screen name='Home' component={UpcomingLeavesScreen} options={{headerShown: false}} />
             <UpcomingStack.Screen name='CreateLeave' component={CreateLeaveScreen} options={{headerShadowVisible: false}} />
             <UpcomingStack.Screen name='EditLeave' component={EditLeaveScreen} options={{headerShadowVisible: false}} />
+            <UpcomingStack.Screen name='FilterLeaves' component={FilterLeavesScreen} options={{headerShadowVisible: false}} />
         </UpcomingStack.Navigator>
     )
 }
@@ -40,7 +44,7 @@ export const AppStack = () => {
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
-                if (route.name === 'UpcomingLeaves') {
+                if (route.name === 'UpcomingLeaves' || route.name == 'UpcomingLeave1') {
                     iconName = focused ? 'clockcircle' : 'clockcircleo'
                 } else if (route.name === 'PastLeaves') {
                     iconName = focused ? 'checkcircle' : 'checkcircleo'
@@ -62,7 +66,7 @@ export const AppStack = () => {
                 options={{
                     tabBarLabel: 'Past Leaves'
                 }}
-                />
+            />
         </Tab.Navigator>
     )
 }

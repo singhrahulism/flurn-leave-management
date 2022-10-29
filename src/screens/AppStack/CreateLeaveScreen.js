@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, Platform, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { createLeave, getLeaves } from '../../redux/features/supabaseSlice';
+import { createLeave } from '../../redux/features/supabaseSlice';
 import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
 import SelectCalendar from '../../components/calendar/SelectCalendar';
 import ApplyLeaveButton from '../../components/buttons/ApplyLeaveButton';
@@ -15,7 +15,6 @@ const CreateLeaveScreen = () => {
     const dispatch = useDispatch()
 
     const isLoading = useSelector(state => state.loading.value)
-    const isChanged = useSelector(state => state.loading.changes)
 
     const [startingDate, setStartingDate] = useState('')
     const [endingDate, setEndingDate] = useState('')
@@ -23,7 +22,6 @@ const CreateLeaveScreen = () => {
     const [totalDays, setTotalDays] = useState(0)
 
     const handlePress = (start_date, end_date, reason) => {
-        console.log('Applying for leave...')
         dispatch(changeLoading(true))
         dispatch(createLeave({start_date, end_date, reason}))
         .then(() => {
@@ -47,7 +45,6 @@ const CreateLeaveScreen = () => {
     useEffect(() => {
         if(startingDate)
         {
-            console.log('startingDate', startingDate)
             if( (new Date(startingDate)).getTime() > (new Date(endingDate)).getTime() )
             {
                 setEndingDate('')
@@ -57,18 +54,10 @@ const CreateLeaveScreen = () => {
     }, [startingDate])
     
     useEffect(() => {
-        if(endingDate)
-        {
-            console.log('endingDate', endingDate)
-        }
-    }, [endingDate])
-    
-    useEffect(() => {
         if(startingDate && endingDate)
         {
             let total = getDateDifference(startingDate, endingDate)
             setTotalDays(total)
-            console.log('total days: ', total)
         }
     }, [startingDate, endingDate])
 
@@ -120,11 +109,10 @@ const styles = StyleSheet.create({
     headingContainer: {
         fontSize: 25,
         fontWeight: 'bold',
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 30
     },
     selectCalendarContainer: {
-        // borderColor: 'red',
-        // borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
@@ -136,7 +124,7 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         paddingHorizontal: 6,
         paddingBottom: 4,
-        minHeight: 100
+        minHeight: 60
     },
     reasonInputContainer: {
         marginVertical: 4

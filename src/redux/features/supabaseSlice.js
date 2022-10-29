@@ -3,6 +3,7 @@ import { API_BASE_URL, HEADERS, API_KEY } from "../../constants/apiConstants";
 import * as SecureStore from 'expo-secure-store'
 import { Platform, ToastAndroid } from "react-native";
 
+
 const initialState = {
     isSignedIn: false,
     token: {
@@ -10,11 +11,12 @@ const initialState = {
         refresh_token: null
     },
     splashStatus: true,
-    leaves: []
+    leaves: [],
+    leavesDuration: 'All leaves'
 }
 
 export const login = createAsyncThunk('supabase/login', async({email, password}) => {
-    console.log('-> inside login...');
+    console.log('-> trying login in...');
     var options = {  
         method: 'POST',
         headers: {...HEADERS, 'Authorization': `Bearer ${API_KEY}`},
@@ -36,7 +38,7 @@ export const login = createAsyncThunk('supabase/login', async({email, password})
                         alert(response.error_description)
                         break
                 }
-                await SecureStore.getItemAsync('dummykey')
+                // await SecureStore.getItemAsync('dummykey')
         }
         else if(response.access_token)
         {
@@ -51,6 +53,7 @@ export const login = createAsyncThunk('supabase/login', async({email, password})
 })
 
 export const signup = createAsyncThunk('supabase/signup', async({name, email, password}) => {
+    console.log(' -> trying signing in...')
     var options = {  
         method: 'POST',
         headers: {...HEADERS, 'Authorization': `Bearer ${API_KEY}`},
@@ -96,7 +99,6 @@ export const getLeaves = createAsyncThunk('supabase/getLeaves', async() => {
     try {
         const res = await fetch(API_BASE_URL+'/rest/v1/leaves?select=*', options)
         const response = await res.json()
-        // console.log(response)
         return response
     } catch (error) {
         console.log('-> error in getLeaves')
@@ -104,9 +106,7 @@ export const getLeaves = createAsyncThunk('supabase/getLeaves', async() => {
 })
 
 export const createLeave = createAsyncThunk('supabase/createLeave', async({ start_date, end_date, reason }) => {
-    console.log(' -> creating Leave')
-    console.log(`start_date: '${start_date}'`)
-    console.log(`end_date: '${end_date}'`)
+    console.log(` -> creating Leave with start_date = ${start_date}, end_date = ${end_date}`)
     let access_token = await SecureStore.getItemAsync('access_token')
     if(reason)
     {
@@ -149,7 +149,6 @@ export const deleteLeave = createAsyncThunk('supabase/deleteLeave', async({leave
     try {
         console.log('-> attempting delete...')
         let apiURL = `${API_BASE_URL}/rest/v1/leaves?id=eq.${leaveID}`
-        // await fetch(API_BASE_URL+`/rest/v1/leaves?id=eq.${leaveID}`, options)
         await fetch(apiURL, options)
         console.log('-> deleted...')
     } catch (error) {
@@ -163,7 +162,7 @@ export const editLeave = createAsyncThunk('supabase/editLeave', async({ starting
     
     var options = {  
         method: 'PATCH',
-        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`},
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`, 'Prefer': 'return=representation'},
         body: JSON.stringify({
             "start_date": `${startingDate}`,
             "end_date": `${endingDate}`
@@ -171,11 +170,32 @@ export const editLeave = createAsyncThunk('supabase/editLeave', async({ starting
     }
     
     try {
-        console.log('-> attempting editing...')
         let apiURL = `${API_BASE_URL}/rest/v1/leaves?id=eq.${leaveID}`
-        await fetch(apiURL, options)
-        console.log('-> edited...')
+        const res = await fetch(apiURL, options)
+        const response = await res.json()
+        return response
     } catch (error) {
+        console.log('-> error in getLeaves')
+    }
+})
+
+export const filterLeaves = createAsyncThunk('supabase/filterLeaves', async({ startdate, enddate }) => {
+    console.log(`  -> filtering leaves with start_date = ${startdate} and end_date = ${enddate}`)
+
+    let access_token = await SecureStore.getItemAsync('access_token')
+    
+    var options = {  
+        method: 'GET',
+        headers: {...HEADERS, 'Authorization': `Bearer ${access_token}`}
+    }
+    
+    try {
+        let apiURL = `${API_BASE_URL}/rest/v1/leaves?start_date=gt.${startdate}&end_date=lt.${enddate}&select=*`
+        const res = await fetch(apiURL, options)
+        const response = await res.json()
+        return response
+    } catch (error) {
+        console.log(error)
         console.log('-> error in getLeaves')
     }
 })
@@ -189,6 +209,9 @@ const supabaseSlice = createSlice({
         },
         changeSplashStatus: (state, action) => {
             state.splashStatus = action.payload
+        },
+        changeLeavesDuration: (state, action) => {
+            state.leavesDuration = action.payload
         }
     },
     extraReducers(builder) {
@@ -212,7 +235,19 @@ const supabaseSlice = createSlice({
             }
             else
             {
+                state.leavesDuration = 'All leaves'
                 state.leaves = action.payload
+            }
+        })
+        .addCase(editLeave.fulfilled, (state, action) => {
+            if(action.payload.message)
+            {
+                console.log(`-> ${action.payload.message}.`)
+                Platform.OS === 'ios' ? alert(action.payload.message) : ToastAndroid.show(action.payload.message, ToastAndroid.SHORT)
+            }
+            else
+            {
+                Platform.OS === 'ios' ? alert('Leave edited successfully.') : ToastAndroid.show("Leave edited successfully", ToastAndroid.SHORT)
             }
         })
         .addCase(createLeave.fulfilled, (state, action) => {
@@ -227,13 +262,21 @@ const supabaseSlice = createSlice({
                 Platform.OS === 'ios' ? alert('Leave created successfully.') : ToastAndroid.show("Leave created successfully", ToastAndroid.SHORT)
             }
         })
-        // .addCase(createLeave.fulfilled, (state, action) => {
-        //     state.leaves += action.payload
-        // })
+        .addCase(filterLeaves.fulfilled, (state, action) => {
+            if(action.payload.message)
+            {
+                console.log(`-> ${action.payload.message}.`)
+                Platform.OS === 'ios' ? alert(action.payload.message) : ToastAndroid.show(action.payload.message, ToastAndroid.SHORT)
+            }
+            else
+            {
+                state.leaves = action.payload
+            }
+        })
     }
     }
 )
 
-export const { changeIsSignedIn, changeSplashStatus } = supabaseSlice.actions
+export const { changeIsSignedIn, changeSplashStatus, changeLeavesDuration } = supabaseSlice.actions
 
 export default supabaseSlice.reducer

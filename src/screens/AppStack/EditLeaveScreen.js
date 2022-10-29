@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Text, View, StyleSheet, StatusBar, TouchableOpacity, TextInput, Platform, ToastAndroid } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { editLeave } from '../../redux/features/supabaseSlice';
 import { changeChanges, changeLoading } from '../../redux/features/loadingSlice';
@@ -17,7 +17,6 @@ const EditLeaveScreen = ({ route }) => {
     const dispatch = useDispatch()
 
     const isLoading = useSelector(state => state.loading.value)
-    const isChanged = useSelector(state => state.loading.changes)
 
     const [startingDate, setStartingDate] = useState(prevStartDate)
     const [endingDate, setEndingDate] = useState(prevEndDate)
@@ -25,7 +24,6 @@ const EditLeaveScreen = ({ route }) => {
 
     const handlePress = () => {
 
-        console.log('Editing leave...')
         dispatch(changeLoading(true))
         dispatch(editLeave({startingDate, endingDate, leaveID}))
         .then(() => {
@@ -35,7 +33,7 @@ const EditLeaveScreen = ({ route }) => {
         })
         .catch(() => {
             dispatch(changeLoading(false))
-            console.log(' -> leave NOT edited...')
+            dispatch(changeChanges(true))
             navigation.goBack()
         })
     }
@@ -49,7 +47,6 @@ const EditLeaveScreen = ({ route }) => {
     useEffect(() => {
         if(startingDate)
         {
-            console.log('startingDate', startingDate)
             if( (new Date(startingDate)).getTime() > (new Date(endingDate)).getTime() )
             {
                 setEndingDate('')
@@ -59,18 +56,10 @@ const EditLeaveScreen = ({ route }) => {
     }, [startingDate])
     
     useEffect(() => {
-        if(endingDate)
-        {
-            console.log('endingDate', endingDate)
-        }
-    }, [endingDate])
-    
-    useEffect(() => {
         if(startingDate && endingDate)
         {
             let total = getDateDifference(startingDate, endingDate)
             setTotalDays(total)
-            console.log('total days: ', total)
         }
     }, [startingDate, endingDate])
 
@@ -118,11 +107,10 @@ const styles = StyleSheet.create({
     headingContainer: {
         fontSize: 25,
         fontWeight: 'bold',
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 30
     },
     selectCalendarContainer: {
-        // borderColor: 'red',
-        // borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between'
     }

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
 
-const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
+const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date, isSelected, noLimit }) => {
 
     const today = new Date().toLocaleDateString().slice(0, 10)
 
@@ -34,10 +34,19 @@ const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
 
     // console.log('minimumDate: ', minimumDate)
 
-    return <TouchableOpacity activeOpacity={isActive ? 0.6 : 1} style={styles.container} onPress={isActive ? handlePress: null}>
+    return <TouchableOpacity
+                activeOpacity={isActive ? 0.6 : 1}
+                style={[styles.container, {
+                    borderColor: isSelected ? 'rgba(32, 173, 69, 0.8)' : '#cecece',
+                    borderWidth: isSelected ? 2.5 : 1
+                }]}
+                onPress={isActive ? handlePress: null}
+            >
         <View style={{flex: 8}}>
-            <Text style={[styles.titleContainer, {color: isActive ? 'black' : '#cecece'}]}>{title}</Text>
-            <Text style={[styles.dateContainer, {color: isActive ? 'black' : '#cecece'}]}>
+            <Text style={[styles.titleContainer, { color: isActive ? (isSelected ? 'rgba(32, 173, 69, 0.8)' : 'black') : '#cecece'}]}>
+                {title}
+            </Text>
+            <Text style={[styles.dateContainer, {color: isActive ? (isSelected ? 'rgba(32, 173, 69, 0.8)' : 'black') : '#cecece'}]}>
                 {
                     date === ''
                     ? 'Select date'
@@ -62,13 +71,24 @@ const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
                 >
                     <Text style={{color: 'white'}}>Dismiss</Text>
                 </TouchableOpacity>
-                <Calendar
-                    minDate={minimumDate ? minimumDate : today}
-                    onDayPress={day => {
-                        setDate(day.dateString)
-                        setShowCalendar(false)
-                    }}
-                />
+                {
+                    noLimit
+                    ?
+                    <Calendar
+                        onDayPress={day => {
+                            setDate(day.dateString)
+                            setShowCalendar(false)
+                        }}
+                    />
+                    :
+                    <Calendar
+                        minDate={minimumDate ? minimumDate : today}
+                        onDayPress={day => {
+                            setDate(day.dateString)
+                            setShowCalendar(false)
+                        }}
+                    />
+                }
             </View>
         </Modal>
     </TouchableOpacity>
@@ -77,7 +97,7 @@ const SelectCalendar = ({ title, setNewDate, isActive, minimumDate, date }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+        // marginTop: 20,
         borderWidth: 1,
         borderColor: '#cecece',
         borderRadius: 4,
@@ -87,7 +107,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     titleContainer: {
-        fontSize: 12
+        fontSize: 12,
+        fontWeight: 'bold'
     },
     dateContainer: {
         marginVertical: 4,

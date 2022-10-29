@@ -7,7 +7,7 @@ import { deleteLeave } from '../../redux/features/supabaseSlice';
 import { getDateDifference } from '../helperFunctions/getDateDifference';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
+const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID, isPastLeave }) => {
 
     let dateDifference = getDateDifference(startingDate, endingDate)
 
@@ -47,9 +47,7 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
     const d2m = month[endingDate.slice(5, 7)-1]
 
     const handleEdit = () => {
-        console.log(' -> leave edit with id: ', leaveID)
         navigation.navigate('EditLeave', { prevStartDate: startingDate, prevEndDate: endingDate, leaveID: leaveID })
-        
     }
     
     const handleDelete = () => {
@@ -78,22 +76,25 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID }) => {
             }
             <Text style={styles.reasonContainer}>{reasonForLeave ? reasonForLeave : 'No Reason specified'}</Text>
         </View>
-        <View style={styles.actionContainer}>
-            <TouchableOpacity
-                style={[styles.actionIconContainer, {backgroundColor: 'rgba(0, 255, 0, 0.15)'}]}
-                activeOpacity={0.4}
-                onPress={handleEdit}
-            >
-                <MaterialCommunityIcons name="pencil" size={20} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.actionIconContainer, {backgroundColor: 'rgba(255, 0, 0, 0.15)'}]}
-                activeOpacity={0.4}
-                onPress={handleDelete}
-            >
-                <MaterialCommunityIcons name="delete" size={20} color="black" />
-            </TouchableOpacity>
-        </View>
+        {
+            !isPastLeave &&
+            <View style={styles.actionContainer}>
+                <TouchableOpacity
+                    style={[styles.actionIconContainer, {backgroundColor: 'rgba(0, 255, 0, 0.15)'}]}
+                    activeOpacity={0.4}
+                    onPress={handleEdit}
+                >
+                    <MaterialCommunityIcons name="pencil" size={20} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.actionIconContainer, {backgroundColor: 'rgba(255, 0, 0, 0.15)'}]}
+                    activeOpacity={0.4}
+                    onPress={handleDelete}
+                >
+                    <MaterialCommunityIcons name="delete" size={20} color="black" />
+                </TouchableOpacity>
+            </View>
+        }
     </View>
 }
 
@@ -101,21 +102,16 @@ const styles = StyleSheet.create({
     container: {
         borderColor: '#d6d6d6',
         borderWidth: 1,
-        // height: 100,
         marginVertical: 10,
         borderRadius: 100/10,
         flexDirection: 'row',
         padding: 10
     },
     detailsContainer: {
-        // borderColor: 'blue',
-        // borderWidth: 1,
         height: '100%',
         flex: 9,
     },
     actionContainer: {
-        // borderColor: 'blue',
-        // borderWidth: 1,
         justifyContent: 'center',
         flex: 2,
         alignItems: 'center'
