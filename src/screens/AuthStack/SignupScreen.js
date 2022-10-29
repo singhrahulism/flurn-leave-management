@@ -81,35 +81,38 @@ const SignupScreen = () => {
     }
 
     return <View style={styles.container} behavior="padding">
-        <Image
-            source={require('../../../assets/signupIllustration.png')}
-            style={styles.loginIllustrationContainer}
-        />
-        <Text style={{
-            fontSize: 25,
-            fontWeight: 'bold',
-            marginVertical: 10
-        }}>Sign Up</Text>
-        <NameField
-            onInputChange={name => setFullName(name)}
-        />
-        <EmailField
-            onInputChange={mail => handleEmail(mail)}
-            shouldShakeField={!isEmailValid}
-        />
-        <PasswordField
-            onInputChange={pass => handlePassword(pass)}
-            shouldShakeField={!isPasswordValid}
-        />
-        <Text style={styles.tncContainer}>By signing up, you agree to our Terms & Conditions and Privacy Policy.</Text>
-        <PrimaryButton
-            text={'Continue'}
-            allowed={fullName && email && password}
-            handlePress={fullName && email && password ? () => {handlePress(email, password, fullName)} : null}
-            useIndicator={isLoading}
-        />
-        <LoginFooter
-        />
+        <View>
+            <Image
+                source={require('../../../assets/signupIllustration.png')}
+                style={styles.loginIllustrationContainer}
+            />
+            <Text style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                marginVertical: 10
+            }}>Sign Up</Text>
+            <NameField
+                onInputChange={name => setFullName(name)}
+            />
+            <EmailField
+                onInputChange={mail => handleEmail(mail)}
+                shouldShakeField={!isEmailValid}
+            />
+            <PasswordField
+                onInputChange={pass => handlePassword(pass)}
+                shouldShakeField={!isPasswordValid}
+            />
+            <Text style={styles.tncContainer}>By signing up, you agree to our Terms & Conditions and Privacy Policy.</Text>
+            <PrimaryButton
+                text={'Continue'}
+                allowed={fullName && email && password}
+                handlePress={fullName && email && password ? () => {handlePress(email, password, fullName)} : null}
+                useIndicator={isLoading}
+            />
+        </View>
+        <View>
+            <LoginFooter />
+        </View>
     </View>
 }
 
@@ -118,9 +121,10 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight+30,
         paddingHorizontal: 30,
+        justifyContent: 'space-between'
     },
     loginIllustrationContainer: {
-        height: 300,
+        height: 260,
         width: 'auto',
         aspectRatio: 1000/666,
         alignSelf: 'center'

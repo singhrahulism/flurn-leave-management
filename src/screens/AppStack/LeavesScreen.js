@@ -58,6 +58,17 @@ const LeavesScreen = () => {
         }
     }, [isChanged])
 
+    useEffect(() => {
+        dispatch(changeLoading(true))
+        dispatch(getLeaves())
+        .then(() => {
+            dispatch(changeLoading(false))
+        })
+        .catch(() => {
+            dispatch(changeLoading(false))
+        })
+    }, [])
+
     return <View style={styles.container}>
         <View style={styles.headerContainer}>
             <Image

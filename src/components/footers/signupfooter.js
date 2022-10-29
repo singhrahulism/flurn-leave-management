@@ -16,7 +16,7 @@ const SignupFooter = () => {
                 activeOpacity={0.65}
                 onPress={() => navigation.navigate('Signup')}
             >
-                <Text style={{color: '#0195f7', fontSize: FONTSIZE}}>Register.</Text>
+                <Text style={{color: 'rgba(32, 173, 69, 0.8)', fontSize: FONTSIZE, fontWeight: 'bold'}}>Register.</Text>
             </TouchableOpacity>
         </View>
     </View>

@@ -68,32 +68,35 @@ const SignupScreen = () => {
     }
 
     return <View style={styles.container}>
-        <Image
-            source={require('../../../assets/loginIllustration.png')}
-            style={styles.loginIllustrationContainer}
-        />
-        <Text style={{
-            fontSize: 25,
-            fontWeight: 'bold',
-            marginVertical: 10
-        }}>Login</Text>
-        <EmailField
-            onInputChange={mail => handleEmail(mail)}
-            shouldShakeField={!isEmailValid}
-        />
-        <PasswordField
-            onInputChange={pass => handlePassword(pass)}
-            shouldShakeField={!isPasswordValid}
-        />
-        <View style={{height: 50}} />
-        <PrimaryButton
-            text={'Login'}
-            allowed={email && password}
-            handlePress={email && password ? handlePress : null}
-            useIndicator={isLoading}
-        />
-        <SignupFooter
-        />
+        <View>
+            <Image
+                source={require('../../../assets/loginIllustration.png')}
+                style={styles.loginIllustrationContainer}
+            />
+            <Text style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                marginVertical: 10
+            }}>Login</Text>
+            <EmailField
+                onInputChange={mail => handleEmail(mail)}
+                shouldShakeField={!isEmailValid}
+            />
+            <PasswordField
+                onInputChange={pass => handlePassword(pass)}
+                shouldShakeField={!isPasswordValid}
+            />
+            <View style={{height: 50}} />
+            <PrimaryButton
+                text={'Login'}
+                allowed={email && password}
+                handlePress={email && password ? handlePress : null}
+                useIndicator={isLoading}
+            />
+        </View>
+        <View>
+            <SignupFooter />
+        </View>
     </View>
 }
 
@@ -102,9 +105,10 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight+30,
         paddingHorizontal: 30,
+        justifyContent: 'space-between'
     },
     loginIllustrationContainer: {
-        height: 300,
+        height: 260,
         width: 'auto',
         aspectRatio: 1000/666,
         alignSelf: 'center'

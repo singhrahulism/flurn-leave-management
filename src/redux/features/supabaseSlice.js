@@ -33,12 +33,7 @@ export const login = createAsyncThunk('supabase/login', async({email, password})
         console.log(response);
         if(response.error)
         {
-            switch(response.error)
-                {
-                    case 'invalid_grant':
-                        Platform.OS === 'ios' ? alert(response.error_description) : ToastAndroid.show(response.error_description, ToastAndroid.LONG)
-                        break
-                }
+            Platform.OS === 'ios' ? alert(response.error_description) : ToastAndroid.show(response.error_description, ToastAndroid.LONG)
                 // await SecureStore.getItemAsync('dummykey')
         }
         else if(response.access_token)
@@ -71,12 +66,7 @@ export const signup = createAsyncThunk('supabase/signup', async({name, email, pa
         const response = await res.json()
         if(response.code)
         {
-            switch(response.msg)
-            {
-                case 'User already registered':
-                    alert('User already registered.')
-                    break
-            }
+            Platform.OS === 'ios' ? alert(response.msg) : ToastAndroid.show(response.msg, ToastAndroid.LONG)
         }
         else if(response.access_token)
         {

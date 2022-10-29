@@ -16,7 +16,7 @@ const LoginFooter = () => {
                 activeOpacity={0.65}
                 onPress={() => navigation.navigate('Login')}
             >
-                <Text style={{color: '#0195f7', fontSize: FONTSIZE}}>Login.</Text>
+                <Text style={{color: 'rgba(32, 173, 69, 0.8)', fontSize: FONTSIZE, fontWeight: 'bold'}}>Login.</Text>
             </TouchableOpacity>
         </View>
     </View>
