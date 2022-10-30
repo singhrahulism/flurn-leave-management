@@ -17,7 +17,7 @@ const App = () => {
     const getToken = async() => {
         console.log(' -> Fetching token from secure store...');
         let token = await SecureStore.getItemAsync('access_token')
-        if(token !== '')
+        if(token)
         {
             console.log(token);
             dispatch(changeSplashStatus(false))
@@ -30,6 +30,10 @@ const App = () => {
             setStack(false)
         }
     }
+
+    useEffect(() => {
+        getToken()
+    }, [isSignedIn])
 
     useEffect(() => {
         getToken()
