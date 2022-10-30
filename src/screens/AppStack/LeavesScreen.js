@@ -70,43 +70,44 @@ const LeavesScreen = () => {
     }, [])
 
     return <View style={styles.container}>
-        <View style={styles.headerContainer}>
-            <Image
-                source={require('../../../assets/mainLogo.png')}
-                style={styles.headerImageContainer}
-            />
-            <TouchableOpacity
-                style={styles.refreshContainer}
-                activeOpacity={0.8}
-                onPress={handleRefresh}
-            >
-                {
-                    isLoading
-                    ? <ActivityIndicator size={'small'} color='white' />
-                    : <Text style={{color: 'white'}}>Refresh</Text>
-                }
-            </TouchableOpacity>
-        </View>
-
         <View>
         <View style={styles.actionHeader}>
+            <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
                 style={styles.showOnCalendar}
                 activeOpacity={0.8}
-                onPress={() => setShowCalendar(true)}
-            >
-                <Text style={{color: 'white'}}>View in calendar</Text>
+                onPress={handleRefresh}
+                >
+                {
+                    isLoading
+                    ? <ActivityIndicator size={'small'} color='white' />
+                    : <Text style={{color: 'white'}}>Update</Text>
+                }
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.showOnCalendar}
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('FilterLeaves')}
-            >
+                >
                 <View style={{flexDirection: 'row'}}>
                     <MaterialCommunityIcons name="filter" size={20} color="white" />
                     <Text style={{color: 'white'}}>  {leavesDuration}  </Text>
                 </View>
             </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.showOnCalendar}
+                activeOpacity={0.8}
+                onPress={() => setShowCalendar(true)}
+                >
+                <MaterialCommunityIcons name="calendar" size={20} color="white" />
+            </TouchableOpacity>
+            </View>
+            <View>
+                <Image
+                    source={require('../../../assets/mainLogo.png')}
+                    style={styles.headerImageContainer}
+                />
+            </View>
         </View>
         <ScrollView style={styles.leavesContainer} showsVerticalScrollIndicator={false} >
             <ViewLeaves title={'Upcoming Leaves'} leaves={upcomingLeaves} />
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
         paddingBottom: 55
     },
     headerImageContainer: {
-        height: 50,
+        height: 45,
         width: 'auto',
         aspectRatio: 1047/500
     },
@@ -162,7 +163,8 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     actionHeader: {
-        flexDirection: 'row-reverse'
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between'
     },
     refreshContainer: {
         backgroundColor: 'rgba(32, 173, 69, 0.8)',
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
         color: '#5f66e1'
     },
     leavesContainer: {
-        marginTop: 20,
+        marginTop: 40,
         marginBottom: 30
     },
     showOnCalendar: {
@@ -197,12 +199,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     dismissContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
         padding: 10,
         margin: 10,
         backgroundColor: 'rgba(32, 173, 69, 0.8)',
         width: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 5
     },
     dropdown: {

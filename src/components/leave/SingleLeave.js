@@ -64,8 +64,6 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID, isPast
         })
     }
 
-
-
     return <View style={styles.container}>
         <View style={styles.detailsContainer}>
             <Text style={styles.totalDaysContainer}>{dateDifference} days application</Text>
@@ -74,7 +72,9 @@ const SingleLeave = ({ startingDate, endingDate, reasonForLeave, leaveID, isPast
                 ? <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m}</Text>
                 : <Text style={styles.toFromContainer}>{d1w}, {d1d} {d1m} - {d2w}, {d2d} {d2m}</Text>
             }
-            <Text style={styles.reasonContainer}>{reasonForLeave ? reasonForLeave : 'No Reason specified'}</Text>
+            <Text style={[styles.reasonContainer, { color: reasonForLeave ? 'rgba(32, 173, 69, 0.8)' : 'rgba(255, 0, 0, 0.4)' }]}>
+                {reasonForLeave ? reasonForLeave : 'No Reason specified'}
+            </Text>
         </View>
         {
             !isPastLeave &&
@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
         marginVertical: 4
     },
     reasonContainer: {
-        color: '#9094de',
         fontWeight: 'bold',
         paddingRight: 10
     },

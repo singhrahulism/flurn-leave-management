@@ -61,9 +61,6 @@ const FilterLeavesScreen = () => {
     ]
 
     const handlePress = () => {
-
-        // console.log('Filtering...')
-        
         var startdate = ''
         var enddate = ''
         var leaveDuration = ''
@@ -292,7 +289,7 @@ const FilterLeavesScreen = () => {
         </View>
         
         <ApplyLeaveButton
-            text={'Get Leaves'}
+            text={'Continue'}
             allowed={
                 isAllSelected || isCurrentMonthSelected || isLastMonthSelected || isLastSixMonthSelected || isLastOneYearSelected || isCustomSelected || (startingDate && endingDate)
             }

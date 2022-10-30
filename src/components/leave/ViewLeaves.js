@@ -10,7 +10,7 @@ const ViewLeaves = ({ title, leaves, pastLeaves }) => {
         >
             <Text style={styles.headingContainer}>  {title}</Text>
         </View>
-        <View style={{height: 20}} />
+        <View style={{height: 10}} />
         {
             leaves.length
             ?
