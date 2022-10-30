@@ -32,9 +32,8 @@ const App = () => {
     }
 
     useEffect(() => {
-        console.log('inside issignedin');
         getToken()
-    }, [isSignedIn])
+    })
 
     if(splashStatus === true)
     {
