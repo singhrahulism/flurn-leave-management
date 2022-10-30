@@ -4,7 +4,7 @@ An easy leave management app to apply for leave applications and maintain a reco
 
 ## Installation
 
-Use the [expo-cli](https://www.npmjs.com/package/expo-cli) to run the app and the package manager [npm](https://nodejs.org/en/download/) to install the required dependencies.
+Install the [expo-cli](https://www.npmjs.com/package/expo-cli) to run the app and the package manager [npm](https://nodejs.org/en/download/) to install the required dependencies, then install Expo Go on your device and scan the QR Code to run the app.
 
 ```bash
 npm install
