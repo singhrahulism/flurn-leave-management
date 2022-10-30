@@ -9,14 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@gorhom/animated-tabbar": "^2.1.2",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/material-bottom-tabs": "^6.2.4",
-    "@react-navigation/material-top-tabs": "^6.3.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.3",
+    "eas-cli": "^2.6.0",
     "expo": "~46.0.16",
     "expo-secure-store": "~11.3.0",
     "expo-status-bar": "~1.4.0",
@@ -25,11 +24,8 @@
     "react": "18.0.0",
     "react-native": "0.69.6",
     "react-native-calendars": "^1.1290.0",
-    "react-native-element-dropdown": "^2.3.1",
     "react-native-gesture-handler": "~2.5.0",
-    "react-native-image-slider-show": "^1.0.3",
     "react-native-paper": "^4.12.5",
-    "react-native-reanimated": "^2.12.0",
     "react-native-svg": "^12.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.4"
