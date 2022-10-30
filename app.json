@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "flurn-leave-management",
+    "name": "Flurn Leave Management",
     "slug": "flurn-leave-management",
     "owner": "singhrahulism",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/logo.png",
