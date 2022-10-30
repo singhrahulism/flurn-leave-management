@@ -20,7 +20,7 @@ cd flurn-leave-management-main
 npm install
 
 # run server
-npx expo install
+npx expo start
 ```
 
 ## Features
