@@ -30,8 +30,6 @@ npx expo start
 4. View all your leaves on a calendar
 5. Maintain your leave record without any hassle
 
-Please make sure to update tests as appropriate.
-
 ## License
 Copyright 2022 Rahul Singh
 
